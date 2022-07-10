@@ -1,29 +1,37 @@
-let db = [
-  { id: 1, username: "amit", password: "111", fullname: "Amit ghosh" },
-  { id: 2, username: "jhon", password: "222", fullname: "Jhon Dev" },
-];
+
+let userDB = [
+  { id: 1, firstName: 'Amit', lastName: 'Ghosh', username: 'amit', password: '1234' },
+  { id: 2, firstName: 'John', lastName: 'Dev', username: 'jhon', password: '1212' },
+  { id: 3, firstName: 'User', lastName: 'One', username: 'user1', password: '1111' },
+]
+
 
 module.exports = class User {
-  constructor(id, username, password, fullname) {
-    this.id = id;
-    this.username = username;
-    this.password = password;
-    this.fullname = fullname;
-    this.accessToken = null;
+
+  constructor(id, username, password) {
+      this.id = id;
+      this.username = username;
+      this.password = password;
   }
 
-  setAcessToken(token) {
-    this.accessToken = token;
+  static getUser(username, password) {
+    const index = userDB.findIndex(user => user.username === username && user.password === password)
+    
+    if(!index) {
+      return null;
+    }
+    return userDB[index];
   }
 
-  findById(userId) {
-    return db.find(user => user.id ==id);
+  static findById(id) {
+    const index = userDB.findIndex(user => user.id === id)
+    return userDB[index];
   }
 
-  static getActiveUser(username, password) {
-    return db.find(user => user.username === username && user.password === password && accessToken != null);
+  static getByToken(token) {
+    const userId = token.split('-')[0];
+    const user = this.findById(userId);
+    return user;
   }
 
-
-
-};
+}

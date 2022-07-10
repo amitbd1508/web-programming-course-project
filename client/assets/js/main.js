@@ -4,8 +4,13 @@ window.onload = function () {
   const loginPanel = document.getElementById("login-panel");
   const logoutPanel = document.getElementById("logout-panel");
   const welcomeUserName = document.getElementById('welcomeUserName');
+  const productTable = document.getElementById("productTable");
+  const noProducts = document.getElementById("noProducts");
+  const productTableBody = document.getElementById("productTableBody");
+
   
   buildProductTable();
+  buildCartTable();
 
   document.getElementById("login").onclick = async () => {
     const username = document.getElementById("username").value;
@@ -35,12 +40,11 @@ window.onload = function () {
     const products = await getProducts();
 
     if (!products) {
-      document.getElementById("productTable").style.display = "none";
-      document.getElementById("noProducts").style.display = "inline";
+      productTable.style.display = "none";
+      noProducts.style.display = "inline";
     } else {
-      document.getElementById("noProducts").style.display = "none";
-      document.getElementById("productTable").style.display = "inline";
-      const productTableBody = document.getElementById("productTableBody");
+      noProducts.style.display = "none";
+      productTable.style.display = "inline";
       let bodyHtml = "";
       products.map((product) => {
         bodyHtml += `
@@ -59,7 +63,10 @@ window.onload = function () {
     }
   }
 
-  
+  async function buildCartTable() {
+    const cart = await getCart()
+
+  }
 
   async function login(username, password) {
     const response = await fetch(`${url}auth/login`, {
@@ -85,6 +92,16 @@ window.onload = function () {
     return response.json();
   }
 
+  async function getCartByUser() {
+    const response = await fetch(`${url}carts`, {
+      headers: {
+        "Content-Type": "application/json",
+        //need to pass token
+      },
+    });
+    return response.json();
+  }
+
   function logout() {
     console.log("logout");
     // sesion clear
@@ -94,7 +111,22 @@ window.onload = function () {
 };
 
 
-async function addToCart(product) {
+async function addToCart(productId) {
   console.log(product);
-  
+
+
+}
+
+
+async function addToCart(productId) {
+  const response = await fetch(`${url}carts`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      productId
+    }),
+  });
+  return await response.json();
 }
