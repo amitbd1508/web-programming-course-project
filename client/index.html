@@ -74,7 +74,7 @@
             </div>
           </div>
   
-          <div id="cartSection" class="m-2 p-2">
+          <div id="cartSection" class="m-2 p-2" style="position: relative;">
             <h3 id="noCartItems" style="display: none;">There is no products in cart</h3>
             <h3>Shopping Cart</h3>
             <div id="cartTable">
@@ -90,7 +90,12 @@
                 <tbody id="cartTableBody">
                   <!-- filled by js -->
                 </tbody>
+                <div style="position: absolute; right:0; bottom: 0">
+                  <button id="btnPlaceOrder" onclick="completeOrder()" type="button" class="btn btn-primary">Place order</button>
+
+                </div>
               </table>
+              
             </div>
           </div>
         </div>

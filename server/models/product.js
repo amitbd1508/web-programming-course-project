@@ -1,4 +1,4 @@
-const productDB = [];
+let productDB = [];
 
 module.exports = class Product {
 
@@ -19,6 +19,18 @@ module.exports = class Product {
         this.id = Math.random().toString();
         productDB.push(this);
         return this;
+    }
+
+    delete() {
+        const index = productDB.findIndex(p => p.id == this.id);
+        if (index > -1) {
+            productDB = productDB.filter(p => {
+                console.log(',,,,', p.id, '----', this.id);
+                return p.id != this.id;
+            });
+        } else {
+            throw new Error('NOT Found');
+        }
     }
 
     update() {

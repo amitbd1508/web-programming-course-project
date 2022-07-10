@@ -47,3 +47,14 @@ async function login(username, password) {
     });
     return await response.json();
   }
+
+  async function placeOrder() {
+    const response = await fetch(`${url}api/v1/carts/placeOrder`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${sessionStorage.getItem('accessToken')}`
+      }
+    });
+    return await response.json();
+  }

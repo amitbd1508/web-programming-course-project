@@ -51,4 +51,10 @@ module.exports = class Cart {
         }
     }
 
+    emptyCartItems() {
+        const index = cartDB.findIndex(cart => cart.id == this.id);
+        this.items = [];
+        cartDB = cartDB.splice(index, 1, this);
+    }
+
 }

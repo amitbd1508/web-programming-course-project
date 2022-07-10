@@ -99,7 +99,13 @@ async function buildCartTable() {
             </tr>
       `;
     });
-    cartTableBody.innerHTML = bodyHtml;
+    cartTableBody.innerHTML = `${bodyHtml}
+      <tr>
+        <td colspan=2></td>
+        <td>Total:</td>
+        <td>${cart.items.reduce((total, item) => total+ (item.price*item.quantity), 0).toFixed(2)}</td>
+      </tr>
+    `;
   }
 }
 function logout() {
@@ -177,5 +183,16 @@ async function updateCart(productId, quantity) {
     if(response.message) {
       swal("Item removed", response.message, "success");
     }
+  }
+}
+
+async function completeOrder() {
+  const response = await placeOrder();
+  if(response.error) {
+    swal("Faild to place order", response.message, "error");
+  } else {
+    buildCartTable();
+    buildProductTable();
+    swal("Order Recieved", response.message, "success");
   }
 }
