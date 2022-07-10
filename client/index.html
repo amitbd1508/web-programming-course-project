@@ -21,7 +21,7 @@
     <nav class="navbar navbar-light bg-light d-flex">
         <img class="justify-content-start" src="./assets/images/logo.svg" alt="Logo" height="50">
         <div id="welcomePanel" style="display: none;" class="justify-content-center">
-            Welcome <span id="welcomeUserName"></span>
+            Welcome, <u id="welcomeUserName"></u>
         </div>
 
         <div id="logout-panel" style="display: none;" class="justify-content-end">
@@ -57,8 +57,9 @@
         
         <div id="loggedinView">
           <div id="productSection" class="m-2 p-2">
+            <h2>Products</h3>
             <h3 id="noProducts" style="display: none;">There is no products</h3>
-            <h3>Products</h3>
+            
             <div id="productTable">
               <table  class="table table-striped">
                 <thead>
@@ -79,8 +80,9 @@
           </div>
   
           <div id="cartSection" class="m-2 p-2" style="position: relative;">
+            <h2>Your Shopping Cart</h3>
             <h3 id="noCartItems" style="display: none;">There is no products in cart</h3>
-            <h3>Shopping Cart</h3>
+
             <div id="cartTable">
               <table  class="table table-striped">
                 <thead>

@@ -10,10 +10,11 @@ window.onload = function (e) {
     showWelcomeUser(true, user);
     buildProductTable();
     buildCartTable();
+    showLoggedInView(true);
   } else {
     showLoginPanel(true);
     showWelcomeUser(false, user);
-    showProductTable(false);
+    showLoggedInView(false);
   }
 };
 
@@ -32,6 +33,7 @@ async function onClickLogin() {
 
       showLoginPanel(false);
       showWelcomeUser(true, user);
+      showLoggedInView(true);
 
       buildProductTable();
       buildCartTable();
@@ -91,7 +93,7 @@ async function buildCartTable() {
                 }, ${item.quantity})" type="button" class="btn btn-secondary">-</button>
                 <input id="${item.productId}" onblur="updateCart(${
                   item.productId
-                }, this.value, ${item.quantity})" type="number" id="quantity" min="1"  value="${
+                }, this.value, ${item.quantity})" style="width: 60px" type="number" id="quantity" min="1"  value="${
                   item.quantity
                 }">
                 <button id="btnDec" onclick="incremnt(${
@@ -114,9 +116,18 @@ function logout() {
   sessionStorage.clear();
   showLoginPanel(true);
   showWelcomeUser(false);
+  showLoggedInView(false);
 }
 
 // view
+function showLoggedInView(show) {
+  const loggedinView = document.getElementById('loggedinView');
+  if(show) {
+    loggedinView.style = 'display:block!important'
+  } else {
+    loggedinView.style = 'display:none!important'
+  }
+}
 function showProductTable(show, productsSize) {
   const productTable = document.getElementById("productTable");
   const noProducts = document.getElementById("noProducts");
@@ -130,6 +141,8 @@ function showProductTable(show, productsSize) {
     noProducts.style.display = "none";
   } else {
     noProducts.style.display = "block";
+    productTable.style.display = "none";
+
   }
 }
 
@@ -147,6 +160,7 @@ function showCartTable(show, cartSize) {
     noCartItems.style.display = "none";
   } else {
     noCartItems.style.display = "block";
+    cartTable.style.display = "none";
   }
 }
 
@@ -195,10 +209,8 @@ function addToCart(productId) {
 }
 
 async function updateCart(productId, quantity, prevQuantity) {
-  console.log('cart', productId, quantity, prevQuantity)
 
   const response = await updateRemoteCart(productId, quantity);
-  console.log(response);
   if (response.error) {
     if(prevQuantity != null) {
       document.getElementById(productId).value = prevQuantity;
