@@ -3,6 +3,7 @@ const User = require('../models/user');
 module.exports = {
     login(req, res) {
         const {username, password} = req.body;
+        console.log(req.body);
 
         if (!(username || !password)) {
             return res.status(400).send({error: true, message: 'User name or password is missing!'})

@@ -12,13 +12,15 @@
 
     <link rel="stylesheet" href="./assets/css/main.css"/>
     <script src="./assets/js/main.js"></script>
+    <script src="./assets/js/httpHelper.js"></script>
+
     
     <title>Easy Shopping</title>
   </head>
   <body>
     <nav class="navbar navbar-light bg-light d-flex">
         <img class="justify-content-start" src="./assets/images/logo.svg" alt="Logo" height="50">
-        <div style="display: none;" class="justify-content-center">
+        <div id="welcomePanel" style="display: none;" class="justify-content-center">
             Welcome <span id="welcomeUserName"></span>
         </div>
 
@@ -40,7 +42,7 @@
               </div>
 
               <div class="justify-content-end">
-                <button type="button" id="login" class="btn btn-primary">Login</button>
+                <button type="button" id="btnLogin" class="btn btn-primary">Login</button>
               </div>
 
         </div>
