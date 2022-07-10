@@ -2,10 +2,10 @@ const url = "http://localhost:3000/";
 let accessToken = sessionStorage.getItem("accessToken");
 let user = JSON.parse(sessionStorage.getItem("user"));
 
-window.onload = function(e) {
+window.onload = function (e) {
   e.preventDefault();
 
-  if(accessToken) {
+  if (accessToken) {
     showLoginPanel(false);
     showWelcomeUser(true, user);
     buildProductTable();
@@ -17,20 +17,18 @@ window.onload = function(e) {
   }
 };
 
-
-document.getElementById("btnLogin").onclick = async (e) => {
-  e.preventDefault();
+async function login() {
   const username = document.getElementById("username").value;
   const password = document.getElementById("password").value;
   if (username && password && username.length > 0 && password.length > 0) {
     const response = await login(username, password);
-    if(response.error) {
-      swal('Login failed', response.message, 'error');
+    if (response.error) {
+      swal("Login failed", response.message, "error");
     } else {
       const user = response.data;
-       // saving token;
-       sessionStorage.setItem('user', JSON.stringify(user));
-       sessionStorage.setItem('accessToken', user.accessToken);
+      // saving token;
+      sessionStorage.setItem("user", JSON.stringify(user));
+      sessionStorage.setItem("accessToken", user.accessToken);
 
       showLoginPanel(false);
       showWelcomeUser(true, user);
@@ -41,11 +39,6 @@ document.getElementById("btnLogin").onclick = async (e) => {
   } else {
     swal("Invalid Credential!", "Please enter valid credentials!", "error");
   }
-};
-
-document.getElementById("btnLogout").onclick = (e) => {
-  e.preventDefault();
-  logout();
 };
 
 async function buildProductTable() {
@@ -66,7 +59,7 @@ async function buildProductTable() {
             <td><img width="50" src="${product.imgUrl}"/></td>
             <td>${product.stock}</td>
             <td>
-              <img onclick="addProductToCart(${product.id})" src="./assets/images/cart.png" alt="add to cart" height="40"/>
+              <img onclick="updateCart(${product.id}, ${1})" src="./assets/images/cart.png" alt="add to cart" height="40"/>
             </td>
           </tr>`;
     });
@@ -78,7 +71,6 @@ async function buildCartTable() {
   const cartTableBody = document.getElementById("cartTableBody");
 
   const response = await getCart();
-  console.log(response)
 
   if (response.error) {
     showCartTable(false);
@@ -92,11 +84,17 @@ async function buildCartTable() {
             <tr>
               <td>${item.name}</td>
               <td>${item.price}</td>
-              <td>${item.price * item.quantity}</td>
+              <td>${parseFloat(item.price * item.quantity).toFixed(2)}</td>
               <td>
-                <button id="btnInc" type="button" class="btn btn-secondary">-</button>
-                <input type="number" id="quantity" min="1" max="12" value="${item.quantity}">
-                <button id="btnDec" type="button" class="btn btn-secondary">+</button>
+                <button id="btnInc" onclick="updateCart(${
+                  item.productId
+                }, ${-1})"  type="button" class="btn btn-secondary">-</button>
+                <input type="number" id="quantity" min="1" max="12" value="${
+                  item.quantity
+                }">
+                <button id="btnDec" onclick="updateCart(${
+                  item.productId
+                }, ${1})" type="button" class="btn btn-secondary">+</button>
               </td>
             </tr>
       `;
@@ -120,12 +118,12 @@ function showProductTable(show, productsSize) {
     productTable.style.display = "none";
   }
 
-  if(productsSize && productsSize > 0) {
+  if (productsSize && productsSize > 0) {
     noProducts.style.display = "none";
   } else {
     noProducts.style.display = "block";
   }
-};
+}
 
 function showCartTable(show, cartSize) {
   const cartTable = document.getElementById("cartTable");
@@ -137,12 +135,12 @@ function showCartTable(show, cartSize) {
     cartTable.style.display = "none";
   }
 
-  if(cartSize && cartSize > 0) {
+  if (cartSize && cartSize > 0) {
     noCartItems.style.display = "none";
   } else {
     noCartItems.style.display = "block";
   }
-};
+}
 
 function showLoginPanel(show) {
   const loginPanel = document.getElementById("login-panel");
@@ -155,7 +153,7 @@ function showLoginPanel(show) {
     loginPanel.style = "display:none!important";
     logoutPanel.style = "display:block!important";
   }
-};
+}
 
 function showWelcomeUser(show, user) {
   const welcomePanel = document.getElementById("welcomePanel");
@@ -166,14 +164,18 @@ function showWelcomeUser(show, user) {
   } else {
     welcomePanel.style = "display:none!important";
   }
-};
-
-async function addProductToCart(productId) {
-   const response = await addToCart(productId);
-   if(response.error) {
-    swal("Faild to add", response.message, 'error')
-   } else {
-    buildCartTable();
-   }
 }
 
+async function updateCart(productId, quantity) {
+  console.log(productId, quantity)
+  const response = await updateRemoteCart(productId, quantity);
+  console.log(response);
+  if (response.error) {
+    swal("Faild to update", response.message, "error");
+  } else {
+    buildCartTable();
+    if(response.message) {
+      swal("Item removed", response.message, "success");
+    }
+  }
+}

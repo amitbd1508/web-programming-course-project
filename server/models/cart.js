@@ -1,8 +1,8 @@
 const CartItem = require('./cartItem');
 const User = require('./user');
 
-const cartDB = [];
-let counter = 1;
+let cartDB = [];
+let counter = 0;
 module.exports = class Cart {
 
     constructor(userId) {
@@ -26,23 +26,27 @@ module.exports = class Cart {
 
     getItemByProductId(productId) {
         const index = this.items.findIndex(item => item.productId == productId);
-        if(index < 1)
+        if(index < 0)
             return null;
         return this.items[index];
     }
 
-    addToCart(product) {
+    deleteItemByProductId(productId) {
+        cartDB[cartDB.findIndex(cart => cart.id == this.id)].items = this.items.filter(item => item.productId != productId);
+    }
+
+    updateCart(product, quantity) {
         const index = cartDB.findIndex(cart => cart.id == this.id);
         let found =false;
         for(let i=0; i< cartDB[index].items.length; i++) {
             if(cartDB[index].items[i].productId == product.id) {
-                cartDB[index].items[i].quantity += 1;
+                cartDB[index].items[i].quantity += quantity;
                 found = true;
             }
         }
 
         if(!found) {
-            this.items.push(new CartItem(product.id, product.name, product.price, 1));
+            this.items.push(new CartItem(product.id, product.name, product.price, quantity));
             cartDB[index] = this;
         }
     }

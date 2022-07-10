@@ -34,13 +34,16 @@ async function login(username, password) {
     return response.json();
   }
 
-  async function addToCart(productId) {
-    const response = await fetch(`${url}api/v1/carts/item/${productId}`, {
-      method: "POST",
+  async function updateRemoteCart(productId, quantity) {
+    const response = await fetch(`${url}api/v1/carts/${productId}`, {
+      method: "PATCH",
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${sessionStorage.getItem('accessToken')}`
-      }
+      },
+      body: JSON.stringify({
+        quantity
+      }),
     });
     return await response.json();
   }

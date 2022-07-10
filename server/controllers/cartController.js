@@ -9,7 +9,6 @@ module.exports = {
     if (!cart) {
       cart = new Cart(user.id);
     }
-    console.log(cart);
 
     if (cart) {
       return res.status(200).send({ error: false, message: null, data: cart });
@@ -19,14 +18,20 @@ module.exports = {
       .send({ error: true, message: "Cannot create cart for this user!" });
   },
 
-  addToCart(req, res) {
+  updateCart(req, res) {
     try {
       const { productId } = req.params;
+      const {quantity} = req.body;
+      if(!productId) {
+        return res
+          .status(400)
+          .send({ error: true, message: "Please specify the product id and quantity", data: null});
+      }
       const product = Product.findById(productId);
       if (!product) {
         return res
           .status(400)
-          .send({ error: true, message: "No product found!" });
+          .send({ error: true, message: "No product found!", data: null });
       }
 
       const user = req.user;
@@ -38,17 +43,25 @@ module.exports = {
       }
 
       const item = cart.getItemByProductId(product.id);
-      if(!product.checkStok(item ? item.quantity +1 : 1)) {
+      const requiredQuantity = item ? item.quantity + quantity : quantity;
+      
+      if(requiredQuantity < 1) {
+        cart.deleteItemByProductId(product.id);
+        return res
+          .status(200)
+          .send({ error: false, message: `${product.name} is removed sucessfully` });
+      }
+
+      if(!product.checkStok(requiredQuantity)) {
         return res
           .status(400)
           .send({ error: true, message: "No stock" });
       }
-
-      cart.addToCart(product);
+      cart.updateCart(product, quantity);
 
       return res.status(200).send({ error: false, message: null, data: cart });
     } catch (e) {
-      console.log(e);
+      return res.status(200).send({ error: true, message: 'Internal Error', data: null });
     }
   },
 };
