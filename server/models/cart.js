@@ -1,19 +1,23 @@
 const CartItem = require('./cartItem');
 const User = require('./user');
 
-let cartDB = [];
-let counter = 0;
+let cartDB = []; // have multiple user problem 
+let counter = 50;
 module.exports = class Cart {
 
     constructor(userId) {
-        this.id = ++counter;
+        this.id =  ++counter;
         this.userId = userId;
         this.items = [];
         cartDB.push(this);
     }
 
+    static getCarts() {
+        return cartDB;
+    }
+
     static findByUserId(userId) {
-        if(userId && User.findById(userId)) {
+        if(userId) {
             const userCart = cartDB.find(cart => cart.userId == userId);
             if(!userCart) {
                 return null;
@@ -53,8 +57,10 @@ module.exports = class Cart {
 
     emptyCartItems() {
         const index = cartDB.findIndex(cart => cart.id == this.id);
-        this.items = [];
-        cartDB = cartDB.splice(index, 1, this);
+        console.log('--------empty cart', JSON.stringify(cartDB))
+        cartDB[index].items = [];
+        console.log('--------empty cart', JSON.stringify(cartDB))
+
     }
 
 }

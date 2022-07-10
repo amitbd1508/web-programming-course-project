@@ -55,11 +55,10 @@ module.exports = class Product {
 
     static findById(productId) {
         const index = productDB.findIndex(p => p.id == productId);
-        if (index > -1) {
-            return productDB[index];
-        } else {
-            throw new Error('NOT Found');
-        }
+        if (index < 0) {
+            return null;
+        } 
+        return productDB[index];
     }
 
     static deleteById(productId) {

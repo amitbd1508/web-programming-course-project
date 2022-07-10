@@ -73,8 +73,9 @@ module.exports = {
   },
 
   placeOrder(req, res) {
-    console.log('place oder')
     const user = req.user;
+    console.log('\n in cart',JSON.stringify(Cart.getCarts()));
+
     const cart = Cart.findByUserId(user.id);
     if (!cart || cart.items.length < 1) {
       return res
@@ -84,6 +85,13 @@ module.exports = {
     try {
       cart.items.map((item) => {
         const product = Product.findById(item.productId);
+        
+        if(!product) {
+          return res
+          .status(400)
+          .send({ error: true, message: `${item.name} is not available. Please update your cart` });
+        }
+        
         product.stock -= item.quantity;
         if (product.stock <= 0) {
           product.delete();

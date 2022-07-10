@@ -18,7 +18,7 @@ async function login(username, password) {
     const response = await fetch(`${url}api/v1/products`, {
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${sessionStorage.getItem('accessToken')}`
+        Authorization: `Bearer ${localStorage.getItem('accessToken')}`
       },
     });
     return response.json();
@@ -28,7 +28,7 @@ async function login(username, password) {
     const response = await fetch(`${url}api/v1/carts`, {
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${sessionStorage.getItem('accessToken')}`
+        Authorization: `Bearer ${localStorage.getItem('accessToken')}`
       },
     });
     return response.json();
@@ -39,7 +39,7 @@ async function login(username, password) {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${sessionStorage.getItem('accessToken')}`
+        Authorization: `Bearer ${localStorage.getItem('accessToken')}`
       },
       body: JSON.stringify({
         quantity
@@ -53,7 +53,7 @@ async function login(username, password) {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${sessionStorage.getItem('accessToken')}`
+        Authorization: `Bearer ${localStorage.getItem('accessToken')}`
       }
     });
     return await response.json();

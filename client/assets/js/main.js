@@ -1,6 +1,6 @@
 const url = "http://localhost:3000/";
-let accessToken = sessionStorage.getItem("accessToken");
-let user = JSON.parse(sessionStorage.getItem("user"));
+let accessToken = localStorage.getItem("accessToken");
+let user = JSON.parse(localStorage.getItem("user"));
 
 window.onload = function (e) {
   e.preventDefault();
@@ -17,7 +17,7 @@ window.onload = function (e) {
   }
 };
 
-async function login() {
+async function onClickLogin() {
   const username = document.getElementById("username").value;
   const password = document.getElementById("password").value;
   if (username && password && username.length > 0 && password.length > 0) {
@@ -27,8 +27,8 @@ async function login() {
     } else {
       const user = response.data;
       // saving token;
-      sessionStorage.setItem("user", JSON.stringify(user));
-      sessionStorage.setItem("accessToken", user.accessToken);
+      localStorage.setItem("user", JSON.stringify(user));
+      localStorage.setItem("accessToken", user.accessToken);
 
       showLoginPanel(false);
       showWelcomeUser(true, user);
