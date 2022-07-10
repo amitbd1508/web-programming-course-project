@@ -15,10 +15,11 @@ async function login(username, password) {
 
 
   async function getProducts() {
+    console.log(sessionStorage.getItem('accessToken'));
     const response = await fetch(`${url}api/v1/products`, {
       headers: {
         "Content-Type": "application/json",
-        //need to pass token
+        Authorization: `Bearer ${sessionStorage.getItem('accessToken')}`
       },
     });
     return response.json();

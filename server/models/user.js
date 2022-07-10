@@ -1,6 +1,6 @@
 
 let userDB = [
-  { id: 1, firstName: 'Amit', lastName: 'Ghosh', username: 'amit', password: '1234' },
+  { id: 1, firstName: 'Amit', lastName: 'Ghosh', username: 'amit', password: '1111' },
   { id: 2, firstName: 'John', lastName: 'Dev', username: 'jhon', password: '1212' },
   { id: 3, firstName: 'User', lastName: 'One', username: 'user1', password: '1111' },
 ]
@@ -29,8 +29,11 @@ module.exports = class User {
   }
 
   static getByToken(token) {
-    const userId = token.split('-')[0];
-    const user = this.findById(userId);
+    const tokenParts = token.split('-')[0];
+    if(tokenParts.length == 0) {
+      return null;
+    }
+    const user = this.findById(parseInt(tokenParts[0]));
     return user;
   }
 

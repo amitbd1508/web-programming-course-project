@@ -18,6 +18,7 @@ window.onload = function() {
   } else {
     showLoginPanel(true);
     showWelcomeUser(false, user);
+    showProductTable(false);
   }
 
   document.getElementById("btnLogin").onclick = async () => {
@@ -29,13 +30,14 @@ window.onload = function() {
         swal('Login failed', response.message, 'error');
       } else {
         const user = response.data;
+         // saving token;
+         sessionStorage.setItem('user', JSON.stringify(user));
+         sessionStorage.setItem('accessToken', user.accessToken);
+
         showLoginPanel(false);
         showWelcomeUser(true, user);
-        await buildProductTable();
 
-        // saving token;
-        sessionStorage.setItem('user', JSON.stringify(user));
-        sessionStorage.setItem('accessToken', user.accessToken);
+        buildProductTable();
       }
     } else {
       swal("Invalid Credential!", "Please enter valid credentials!", "error");
@@ -52,7 +54,7 @@ window.onload = function() {
     if (!products) {
       showProductTable(false);
     } else {
-      showProductTable(true);
+      showProductTable(true, products.length);
       let bodyHtml = "";
       products.map((product) => {
         bodyHtml += `
@@ -77,12 +79,16 @@ window.onload = function() {
   }
 
   // view
-  function showProductTable(show) {
+  function showProductTable(show, productsSize) {
     if (show) {
       productTable.style.display = "block";
-      noProducts.style.display = "none";
     } else {
       productTable.style.display = "none";
+    }
+
+    if(productsSize && productsSize > 0) {
+      noProducts.style.display = "none";
+    } else {
       noProducts.style.display = "block";
     }
   };
@@ -112,30 +118,6 @@ async function addToCart(productId) {
 }
 
 // Api Call
-
-async function login(username, password) {
-  const response = await fetch(`${url}auth/login`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      loginId: username,
-      password: password,
-    }),
-  });
-  return await response.json();
-}
-
-async function getCartByUser() {
-  const response = await fetch(`${url}carts`, {
-    headers: {
-      "Content-Type": "application/json",
-      //need to pass token
-    },
-  });
-  return response.json();
-}
 
 async function addToCart(productId) {
   const response = await fetch(`${url}api/v1/carts`, {

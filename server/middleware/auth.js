@@ -1,21 +1,27 @@
-const User = require('../models/user')
+const User = require("../models/user");
 
+module.exports = {
+  verifyUserToken(req, res, next) {
+    const accessToken = req.headers.authorization;
+    const tokenParts = accessToken.split(" ");
 
-const verifyUserToken = (req, res, next) => {
-    const accessToken = req.headers.authorization
-
-    if (!accessToken) {
-        return res.status(400).send('Not Authenticated')
+    if (
+      !accessToken &&
+      accessToken.includes("Bearer") &&
+      tokenParts.length > 0
+    ) {
+      return res
+        .status(400)
+        .send({ error: true, message: "Not Authenticated" });
     }
+    const token = tokenParts[1];
 
-    const decoded = User.verifyToken(accessToken)
-    if (decoded) {
-        req.user = decoded;
-        return next();
-
+    const user = User.getByToken(token);
+    if (user) {
+      req.user = user;
+      return next();
     } else {
-        return res.status(400).send("Invalid Token")
+      return res.status(400).send({ error: true, message: "Invalid Token" });
     }
-}
-
-module.exports = verifyToken;
+  },
+};
