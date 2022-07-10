@@ -16,8 +16,8 @@ module.exports = class User {
 
   static getUser(username, password) {
     const index = userDB.findIndex(user => user.username === username && user.password === password)
-    
-    if(!index) {
+
+    if(index < 0) {
       return null;
     }
     return userDB[index];

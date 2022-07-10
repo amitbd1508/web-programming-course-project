@@ -9,6 +9,7 @@ module.exports = {
         }
 
         const user = User.getUser(username, password);
+        console.log(user)
       
         if (user) {
             this.accessToken = `${user.id}-${user.username}-${new Date().valueOf()}`;
