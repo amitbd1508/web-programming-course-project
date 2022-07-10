@@ -1,6 +1,6 @@
 const url = "http://localhost:3000/";
-let accessToken = localStorage.getItem("accessToken");
-let user = JSON.parse(localStorage.getItem("user"));
+let accessToken = sessionStorage.getItem("accessToken");
+let user = JSON.parse(sessionStorage.getItem("user"));
 
 window.onload = function (e) {
   e.preventDefault();
@@ -27,8 +27,8 @@ async function onClickLogin() {
     } else {
       const user = response.data;
       // saving token;
-      localStorage.setItem("user", JSON.stringify(user));
-      localStorage.setItem("accessToken", user.accessToken);
+      sessionStorage.setItem("user", JSON.stringify(user));
+      sessionStorage.setItem("accessToken", user.accessToken);
 
       showLoginPanel(false);
       showWelcomeUser(true, user);
