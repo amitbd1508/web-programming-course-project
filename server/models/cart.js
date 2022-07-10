@@ -24,9 +24,27 @@ module.exports = class Cart {
         }
     }
 
+    getItemByProductId(productId) {
+        const index = this.items.findIndex(item => item.productId == productId);
+        if(index < 1)
+            return null;
+        return this.items[index];
+    }
+
     addToCart(product) {
-        this.items.push(new CartItem(product.id, product.name, product.price, 1));
-        cartDB[cartDB.findIndex(cart => cart.id == this.id)] = this;
+        const index = cartDB.findIndex(cart => cart.id == this.id);
+        let found =false;
+        for(let i=0; i< cartDB[index].items.length; i++) {
+            if(cartDB[index].items[i].productId == product.id) {
+                cartDB[index].items[i].quantity += 1;
+                found = true;
+            }
+        }
+
+        if(!found) {
+            this.items.push(new CartItem(product.id, product.name, product.price, 1));
+            cartDB[index] = this;
+        }
     }
 
 }

@@ -29,12 +29,6 @@ module.exports = {
           .send({ error: true, message: "No product found!" });
       }
 
-      if(!product.checkStok(1)) {
-        return res
-          .status(400)
-          .send({ error: true, message: "No stock" });
-      }
-
       const user = req.user;
       const cart = findByUserId(user.id);
       if (!cart) {
@@ -42,6 +36,14 @@ module.exports = {
           .status(400)
           .send({ error: true, message: "Cannot find cart for this user!" });
       }
+
+      const item = cart.getItemByProductId(product.id);
+      if(!product.checkStok(item ? item.quantity +1 : 1)) {
+        return res
+          .status(400)
+          .send({ error: true, message: "No stock" });
+      }
+
       cart.addToCart(product);
 
       return res.status(200).send({ error: false, message: null, data: cart });
