@@ -59,7 +59,7 @@ async function buildProductTable() {
             <td><img width="50" src="${product.imgUrl}"/></td>
             <td>${product.stock}</td>
             <td>
-              <img onclick="updateCart(${product.id}, ${1})" src="./assets/images/cart.png" alt="add to cart" height="40"/>
+              <img onclick="addToCart(${product.id})" src="./assets/images/cart.png" alt="add to cart" height="40"/>
             </td>
           </tr>`;
     });
@@ -86,15 +86,17 @@ async function buildCartTable() {
               <td>${item.price}</td>
               <td>${parseFloat(item.price * item.quantity).toFixed(2)}</td>
               <td>
-                <button id="btnInc" onclick="updateCart(${
+                <button id="btnInc" onclick="decrement(${
                   item.productId
-                }, ${-1})"  type="button" class="btn btn-secondary">-</button>
-                <input type="number" id="quantity" min="1" max="12" value="${
+                }, ${item.quantity})" type="button" class="btn btn-secondary">-</button>
+                <input id="${item.productId}" onblur="updateCart(${
+                  item.productId
+                }, this.value, ${item.quantity})" type="number" id="quantity" min="1"  value="${
                   item.quantity
                 }">
-                <button id="btnDec" onclick="updateCart(${
+                <button id="btnDec" onclick="incremnt(${
                   item.productId
-                }, ${1})" type="button" class="btn btn-secondary">+</button>
+                }, ${item.quantity})" type="button" class="btn btn-secondary">+</button>
               </td>
             </tr>
       `;
@@ -172,11 +174,35 @@ function showWelcomeUser(show, user) {
   }
 }
 
-async function updateCart(productId, quantity) {
-  console.log(productId, quantity)
+function incremnt(productId, prevQuantity) {
+
+  const quantity = parseInt(document.getElementById(productId).value) + 1;
+  updateCart(productId, quantity, prevQuantity);
+}
+
+function decrement(productId, prevQuantity) {
+  const quantity = parseInt(document.getElementById(productId).value) - 1;
+  updateCart(productId, quantity, prevQuantity);
+}
+
+function addToCart(productId) {
+  const quantityElement = document.getElementById(productId);
+  if(quantityElement) {
+    updateCart(productId, parseInt(quantityElement.value)+1, parseInt(quantityElement.value));
+  } else {
+    updateCart(productId, 1, null);
+  }
+}
+
+async function updateCart(productId, quantity, prevQuantity) {
+  console.log('cart', productId, quantity, prevQuantity)
+
   const response = await updateRemoteCart(productId, quantity);
   console.log(response);
   if (response.error) {
+    if(prevQuantity != null) {
+      document.getElementById(productId).value = prevQuantity;
+    }
     swal("Faild to update", response.message, "error");
   } else {
     buildCartTable();

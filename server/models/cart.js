@@ -44,7 +44,7 @@ module.exports = class Cart {
         let found =false;
         for(let i=0; i< cartDB[index].items.length; i++) {
             if(cartDB[index].items[i].productId == product.id) {
-                cartDB[index].items[i].quantity += quantity;
+                cartDB[index].items[i].quantity = quantity;
                 found = true;
             }
         }
@@ -57,10 +57,7 @@ module.exports = class Cart {
 
     emptyCartItems() {
         const index = cartDB.findIndex(cart => cart.id == this.id);
-        console.log('--------empty cart', JSON.stringify(cartDB))
         cartDB[index].items = [];
-        console.log('--------empty cart', JSON.stringify(cartDB))
-
     }
 
 }

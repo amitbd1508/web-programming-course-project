@@ -27,7 +27,7 @@ module.exports = {
           .status(400)
           .send({
             error: true,
-            message: "Please specify the product id and quantity",
+            message: "Please specify the product id!",
             data: null,
           });
       }
@@ -46,10 +46,13 @@ module.exports = {
           .send({ error: true, message: "Cannot find cart for this user!" });
       }
 
+      if (!product.checkStok(quantity)) {
+        return res.status(400).send({ error: true, message: "No stock" });
+      }
+      cart.updateCart(product, quantity);
+    
       const item = cart.getItemByProductId(product.id);
-      const requiredQuantity = item ? item.quantity + quantity : quantity;
-
-      if (requiredQuantity < 1) {
+      if (item.quantity < 1) {
         cart.deleteItemByProductId(product.id);
         return res
           .status(200)
@@ -59,13 +62,9 @@ module.exports = {
           });
       }
 
-      if (!product.checkStok(requiredQuantity)) {
-        return res.status(400).send({ error: true, message: "No stock" });
-      }
-      cart.updateCart(product, quantity);
-
       return res.status(200).send({ error: false, message: null, data: cart });
     } catch (e) {
+      console.log(e);
       return res
         .status(200)
         .send({ error: true, message: "Internal Error", data: null });
@@ -92,11 +91,13 @@ module.exports = {
           .send({ error: true, message: `${item.name} is not available. Please update your cart` });
         }
         
-        product.stock -= item.quantity;
-        if (product.stock <= 0) {
-          product.delete();
-        } else {
+        if(product.stock >= item.quantity) {
+          product.stock -= item.quantity;
           product.update();
+        } else {
+          return res
+          .status(400)
+          .send({ error: true, message: `${product.stock} ${product.name} items is availabily. Please update your cart` });
         }
       });
 
