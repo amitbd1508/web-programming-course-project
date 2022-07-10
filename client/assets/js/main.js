@@ -155,7 +155,5 @@ window.onload = function(e) {
   };
 };
 
-async function addToCart(productId) {
-  console.log(product);
-}
+
 

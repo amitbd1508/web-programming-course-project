@@ -1,10 +1,14 @@
 const express = require("express");
 const cors = require("cors");
 
+const Product = require('./models/product')
 const {verifyUserToken} = require("./middleware/auth");
 
 const authRouter = require("./routes/authRouter");
 const router = require("./routes");
+
+const products = require('./data/products.json');
+Product.insertAll(products);
 
 const app = express();
 

@@ -1,33 +1,4 @@
-let products = [
-    {
-        id: 3452,
-        name: 'NodeJs',
-        price: 40.32,
-        imgUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d9/Node.js_logo.svg/1200px-Node.js_logo.svg.png',
-        stock: 4
-    },
-    {
-        id: 3453,
-        name: 'React',
-        price: 30.32,
-        imgUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d9/Node.js_logo.svg/1200px-Node.js_logo.svg.png',
-        stock: 1
-    },
-    {
-        id: 3454,
-        name: 'Angular',
-        price: 25.45,
-        imgUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d9/Node.js_logo.svg/1200px-Node.js_logo.svg.png',
-        stock: 2
-    },
-    {
-        id: 3455,
-        name: 'Vue',
-        price: 10.32,
-        imgUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d9/Node.js_logo.svg/1200px-Node.js_logo.svg.png',
-        stock: 4
-    }
-];
+const productDB = [];
 
 module.exports = class Product {
 
@@ -39,16 +10,21 @@ module.exports = class Product {
         this.stock = stock;
     }
 
+    static insertAll(products) {
+        console.log()
+        products.map(product => productDB.push(new Product(product.id, product.name, product.price, product.imgUrl, product.stock)));
+    }
+
     save() {
         this.id = Math.random().toString();
-        products.push(this);
+        productDB.push(this);
         return this;
     }
 
     update() {
-        const index = products.findIndex(p => p.id === this.id);
+        const index = productDB.findIndex(p => p.id === this.id);
         if (index > -1) {
-            products.splice(index, 1, this);
+            productDB.splice(index, 1, this);
             return this;
         } else {
             throw new Error('NOT Found');
@@ -56,23 +32,27 @@ module.exports = class Product {
 
     }
 
+    checkStok(quantity) {
+        return this.stock >= quantity;
+    }
+
     static fetchAll() {
-        return products;
+        return productDB;
     }
 
     static findById(productId) {
-        const index = products.findIndex(p => p.id === productId);
+        const index = productDB.findIndex(p => p.id == productId);
         if (index > -1) {
-            return products[index];
+            return productDB[index];
         } else {
             throw new Error('NOT Found');
         }
     }
 
     static deleteById(productId) {
-        const index = products.findIndex(p => p.id === productId);
+        const index = productDB.findIndex(p => p.id === productId);
         if (index > -1) {
-            products = products.filter(p => p.id !== productId);
+            productDB = productDB.filter(p => p.id !== productId);
         } else {
             throw new Error('NOT Found');
         }

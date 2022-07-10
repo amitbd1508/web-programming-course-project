@@ -1,3 +1,4 @@
+const CartItem = require('./cartItem');
 const User = require('./user');
 
 const cartDB = [];
@@ -21,6 +22,11 @@ module.exports = class Cart {
         } else {
             throw new Error('User not vaild!')
         }
+    }
+
+    addToCart(product) {
+        this.items.push(new CartItem(product.id, product.name, product.price, 1));
+        cartDB[cartDB.findIndex(cart => cart.id == this.id)] = this;
     }
 
 }

@@ -35,14 +35,12 @@ async function login(username, password) {
   }
 
   async function addToCart(productId) {
-    const response = await fetch(`${url}api/v1/carts`, {
+    const response = await fetch(`${url}api/v1/carts/item/${productId}`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        productId,
-      }),
+        Authorization: `Bearer ${sessionStorage.getItem('accessToken')}`
+      }
     });
     return await response.json();
   }
