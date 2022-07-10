@@ -15,7 +15,6 @@ async function login(username, password) {
 
 
   async function getProducts() {
-    console.log(sessionStorage.getItem('accessToken'));
     const response = await fetch(`${url}api/v1/products`, {
       headers: {
         "Content-Type": "application/json",
@@ -23,4 +22,27 @@ async function login(username, password) {
       },
     });
     return response.json();
+  }
+
+  async function getCart() {
+    const response = await fetch(`${url}api/v1/carts`, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${sessionStorage.getItem('accessToken')}`
+      },
+    });
+    return response.json();
+  }
+
+  async function addToCart(productId) {
+    const response = await fetch(`${url}api/v1/carts`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        productId,
+      }),
+    });
+    return await response.json();
   }

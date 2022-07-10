@@ -2,7 +2,9 @@ const url = "http://localhost:3000/";
 let accessToken = sessionStorage.getItem("accessToken");
 let user = JSON.parse(sessionStorage.getItem("user"));
 
-window.onload = function() {
+window.onload = function(e) {
+  e.preventDefault();
+  
   const loginPanel = document.getElementById("login-panel");
   const logoutPanel = document.getElementById("logout-panel");
   const welcomePanel = document.getElementById("welcomePanel");
@@ -10,18 +12,25 @@ window.onload = function() {
   const productTable = document.getElementById("productTable");
   const noProducts = document.getElementById("noProducts");
   const productTableBody = document.getElementById("productTableBody");
+  
+  const cartTable = document.getElementById("cartTable");
+  const cartTableBody = document.getElementById("cartTableBody");
+  const noCartItems = document.getElementById("noCartItems");
+
 
   if(accessToken) {
     showLoginPanel(false);
     showWelcomeUser(true, user);
     buildProductTable();
+    buildCartTable();
   } else {
     showLoginPanel(true);
     showWelcomeUser(false, user);
     showProductTable(false);
   }
 
-  document.getElementById("btnLogin").onclick = async () => {
+  document.getElementById("btnLogin").onclick = async (e) => {
+    e.preventDefault();
     const username = document.getElementById("username").value;
     const password = document.getElementById("password").value;
     if (username && password && username.length > 0 && password.length > 0) {
@@ -38,13 +47,15 @@ window.onload = function() {
         showWelcomeUser(true, user);
 
         buildProductTable();
+        buildCartTable();
       }
     } else {
       swal("Invalid Credential!", "Please enter valid credentials!", "error");
     }
   };
 
-  document.getElementById("btnLogout").onclick = () => {
+  document.getElementById("btnLogout").onclick = (e) => {
+    e.preventDefault();
     logout();
   };
 
@@ -72,6 +83,23 @@ window.onload = function() {
     }
   }
 
+  async function buildCartTable() {
+    const response = await getCart();
+    console.log(response)
+
+    if (response.error) {
+      showCartTable(false);
+    } else {
+      const cart = response.data;
+
+      showCartTable(true, cart.items.length);
+      let bodyHtml = "";
+      cart.items.map((item) => {
+        bodyHtml += 'data coming ';
+      });
+      cartTableBody.innerHTML = bodyHtml;
+    }
+  }
   function logout() {
     sessionStorage.clear();
     showLoginPanel(true);
@@ -90,6 +118,20 @@ window.onload = function() {
       noProducts.style.display = "none";
     } else {
       noProducts.style.display = "block";
+    }
+  };
+
+  function showCartTable(show, cartSize) {
+    if (show) {
+      cartTable.style.display = "block";
+    } else {
+      cartTable.style.display = "none";
+    }
+
+    if(cartSize && cartSize > 0) {
+      noCartItems.style.display = "none";
+    } else {
+      noCartItems.style.display = "block";
     }
   };
 
@@ -117,17 +159,3 @@ async function addToCart(productId) {
   console.log(product);
 }
 
-// Api Call
-
-async function addToCart(productId) {
-  const response = await fetch(`${url}api/v1/carts`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      productId,
-    }),
-  });
-  return await response.json();
-}

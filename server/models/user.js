@@ -25,6 +25,7 @@ module.exports = class User {
 
   static findById(id) {
     const index = userDB.findIndex(user => user.id === id)
+    if(index < 0) return null;
     return userDB[index];
   }
 

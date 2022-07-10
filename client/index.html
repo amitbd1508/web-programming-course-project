@@ -51,56 +51,58 @@
       <div class="container">
         <h3 id="welcomeMessage" class="m-4 p-4">Welcome to my store</h3>
         
-        <div id="productSection" class="m-2 p-2">
-          <h3 id="noProducts" style="display: none;">There is no products</h3>
-          <h3>Products</h3>
-          <div id="productTable">
-            <table  class="table table-striped">
-              <thead>
-                <tr>
-                  <th scope="col">Name</th>
-                  <th scope="col">Price</th>
-                  <th scope="col">Image</th>
-                  <th scope="col">Stock</th>
-                  <th scope="col">Action</th>
-                </tr>
-              </thead>
-              <tbody id="productTableBody">
-                <!-- filled by js -->
-                
-              </tbody>
-            </table>
+        <div id="loggedinView">
+          <div id="productSection" class="m-2 p-2">
+            <h3 id="noProducts" style="display: none;">There is no products</h3>
+            <h3>Products</h3>
+            <div id="productTable">
+              <table  class="table table-striped">
+                <thead>
+                  <tr>
+                    <th scope="col">Name</th>
+                    <th scope="col">Price</th>
+                    <th scope="col">Image</th>
+                    <th scope="col">Stock</th>
+                    <th scope="col">Action</th>
+                  </tr>
+                </thead>
+                <tbody id="productTableBody">
+                  <!-- filled by js -->
+                  
+                </tbody>
+              </table>
+            </div>
           </div>
-        </div>
-
-        <div id="cartSection" class="m-2 p-2">
-          <h3 id="noProducts" style="display: none;">There is no products in cart</h3>
-          <h3>Shopping Cart</h3>
-          <div id="cartTable">
-            <table  class="table table-striped">
-              <thead>
-                <tr>
-                  <th scope="col">Name</th>
-                  <th scope="col">Price</th>
-                  <th scope="col">Total</th>
-                  <th scope="col">Qantity</th>
-                </tr>
-              </thead>
-              <tbody id="cartTableBody">
-                <!-- filled by js -->
-                <tr>
-                  <td>Node</td>
-                  <td>3</td>
-                  <td>5</td>
-                  <td>
-                    <button id="btnInc" type="button" class="btn btn-secondary">-</button>
-                    <input type="number" id="quantity" min="1" max="12" value="3">
-                    <button id="btnDec" type="button" class="btn btn-secondary">+</button>
-                  </td>
-                </tr>
-                
-              </tbody>
-            </table>
+  
+          <div id="cartSection" class="m-2 p-2">
+            <h3 id="noCartItems" style="display: none;">There is no products in cart</h3>
+            <h3>Shopping Cart</h3>
+            <div id="cartTable">
+              <table  class="table table-striped">
+                <thead>
+                  <tr>
+                    <th scope="col">Name</th>
+                    <th scope="col">Price</th>
+                    <th scope="col">Total</th>
+                    <th scope="col">Qantity</th>
+                  </tr>
+                </thead>
+                <tbody id="cartTableBody">
+                  <!-- filled by js -->
+                  <tr>
+                    <td>Node</td>
+                    <td>3</td>
+                    <td>5</td>
+                    <td>
+                      <button id="btnInc" type="button" class="btn btn-secondary">-</button>
+                      <input type="number" id="quantity" min="1" max="12" value="3">
+                      <button id="btnDec" type="button" class="btn btn-secondary">+</button>
+                    </td>
+                  </tr>
+                  
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
 
