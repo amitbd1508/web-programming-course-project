@@ -84,7 +84,7 @@
             <h3 id="noCartItems" style="display: none;">There is no products in cart</h3>
 
             <div id="cartTable">
-              <table  class="table table-striped">
+              <table  class="table table-striped mb-5">
                 <thead>
                   <tr>
                     <th scope="col">Name</th>
@@ -96,11 +96,11 @@
                 <tbody id="cartTableBody">
                   <!-- filled by js -->
                 </tbody>
-                <div style="position: absolute; right:0; bottom: 0">
-                  <button id="btnPlaceOrder" onclick="completeOrder()" type="button" class="btn btn-primary">Place order</button>
-
-                </div>
               </table>
+              <div style="position: absolute; right:0; bottom: 0;">
+                <button id="btnPlaceOrder" onclick="completeOrder()" type="button" class="btn btn-primary">Place order</button>
+
+              </div>
               
             </div>
           </div>

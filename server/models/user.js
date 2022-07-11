@@ -30,12 +30,12 @@ module.exports = class User {
   }
 
   static getByToken(token) {
-    const tokenParts = token.split('-')[0];
-    if(tokenParts.length == 0) {
+    const tokenParts = token.split('-');
+    if(tokenParts.length != 3) {
       return null;
     }
     const user = this.findById(parseInt(tokenParts[0]));
-    return user;
+    return user.username == tokenParts[1] ? user : null;
   }
 
 }

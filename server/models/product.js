@@ -45,7 +45,6 @@ module.exports = class Product {
     }
 
     checkStok(quantity) {
-        console.log(this.stock, quantity);
         return this.stock >= quantity;
     }
 

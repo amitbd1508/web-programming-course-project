@@ -11,8 +11,8 @@ module.exports = {
       tokenParts.length > 0
     ) {
       return res
-        .status(400)
-        .send({ error: true, message: "Not Authenticated" });
+        .status(401)
+        .send({ error: true, errorCode: 401, message: "Not Authenticated! Please login." });
     }
     const token = tokenParts[1];
 
@@ -21,7 +21,7 @@ module.exports = {
       req.user = user;
       return next();
     } else {
-      return res.status(400).send({ error: true, message: "Invalid Token" });
+      return res.status(401).send({ error: true, errorCode: 401, message: "Session invalid! Please login." });
     }
   },
 };

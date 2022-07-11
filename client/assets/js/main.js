@@ -211,7 +211,13 @@ function addToCart(productId) {
 async function updateCart(productId, quantity, prevQuantity) {
 
   const response = await updateRemoteCart(productId, quantity);
+  
   if (response.error) {
+    if(response.errorCode == 401) {
+      logout();
+      swal("Logout", response.message, "error");
+      return;
+    }
     if(prevQuantity != null) {
       document.getElementById(productId).value = prevQuantity;
     }
@@ -227,6 +233,11 @@ async function updateCart(productId, quantity, prevQuantity) {
 async function completeOrder() {
   const response = await placeOrder();
   if(response.error) {
+    if(response.errorCode == 401) {
+      logout();
+      swal("Logout", response.message, "error");
+      return;
+    }
     swal("Faild to place order", response.message, "error");
   } else {
     buildCartTable();

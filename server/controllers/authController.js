@@ -8,9 +8,7 @@ module.exports = {
             return res.status(400).send({error: true, message: 'User name or password is missing!'})
         }
 
-        const user = User.getUser(username, password);
-        console.log(user)
-      
+        const user = User.getUser(username, password);      
         if (user) {
             this.accessToken = `${user.id}-${user.username}-${new Date().valueOf()}`;
             return res.status(200).send({error: false, message: 'Login sucessfull', data: {
