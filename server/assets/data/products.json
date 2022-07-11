@@ -1,0 +1,30 @@
+[
+    {
+      "id": 3452,
+      "name": "NodeJs",
+      "price": 40.32,
+      "imgUrl": "http://localhost:3000/images/node.png",
+      "stock": 4
+    },
+    {
+      "id": 3453,
+      "name": "React",
+      "price": 30.32,
+      "imgUrl": "http://localhost:3000/images/react.png",
+      "stock": 1
+    },
+    {
+      "id": 3454,
+      "name": "Angular",
+      "price": 25.45,
+      "imgUrl": "http://localhost:3000/images/angular.png",
+      "stock": 2
+    },
+    {
+      "id": 3455,
+      "name": "Vue",
+      "price": 10.32,
+      "imgUrl": "http://localhost:3000/images/vue.png",
+      "stock": 4
+    }
+  ]
