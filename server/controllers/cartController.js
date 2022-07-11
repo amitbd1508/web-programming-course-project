@@ -64,7 +64,6 @@ module.exports = {
 
       return res.status(200).send({ error: false, message: null, data: cart });
     } catch (e) {
-      console.log(e);
       return res
         .status(200)
         .send({ error: true, message: "Internal Error", data: null });
@@ -73,7 +72,6 @@ module.exports = {
 
   placeOrder(req, res) {
     const user = req.user;
-    console.log('\n in cart',JSON.stringify(Cart.getCarts()));
 
     const cart = Cart.findByUserId(user.id);
     if (!cart || cart.items.length < 1) {

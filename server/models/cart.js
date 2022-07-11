@@ -1,7 +1,6 @@
 const CartItem = require('./cartItem');
-const User = require('./user');
 
-let cartDB = []; // have multiple user problem 
+let cartDB = [];
 let counter = 50;
 module.exports = class Cart {
 
@@ -10,10 +9,6 @@ module.exports = class Cart {
         this.userId = userId;
         this.items = [];
         cartDB.push(this);
-    }
-
-    static getCarts() {
-        return cartDB;
     }
 
     static findByUserId(userId) {

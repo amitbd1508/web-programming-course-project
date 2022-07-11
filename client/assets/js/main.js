@@ -167,13 +167,18 @@ function showCartTable(show, cartSize) {
 function showLoginPanel(show) {
   const loginPanel = document.getElementById("login-panel");
   const logoutPanel = document.getElementById("logout-panel");
+  const welcomeMessage = document.getElementById('welcomeMessage');
 
   if (show) {
     loginPanel.style = "display:block!important";
     logoutPanel.style = "display:none!important";
+    welcomeMessage.style = "display:block!important";
+
   } else {
     loginPanel.style = "display:none!important";
     logoutPanel.style = "display:block!important";
+    welcomeMessage.style = "display:none!important";
+
   }
 }
 
@@ -221,7 +226,7 @@ async function updateCart(productId, quantity, prevQuantity) {
     if(prevQuantity != null) {
       document.getElementById(productId).value = prevQuantity;
     }
-    swal("Faild to update", response.message, "error");
+    swal("Faild to add", response.message, "error");
   } else {
     buildCartTable();
     if(response.message) {

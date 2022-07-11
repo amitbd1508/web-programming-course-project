@@ -11,26 +11,7 @@ module.exports = class Product {
     }
 
     static insertAll(products) {
-        console.log()
         products.map(product => productDB.push(new Product(product.id, product.name, product.price, product.imgUrl, product.stock)));
-    }
-
-    save() {
-        this.id = Math.random().toString();
-        productDB.push(this);
-        return this;
-    }
-
-    delete() {
-        const index = productDB.findIndex(p => p.id == this.id);
-        if (index > -1) {
-            productDB = productDB.filter(p => {
-                console.log(',,,,', p.id, '----', this.id);
-                return p.id != this.id;
-            });
-        } else {
-            throw new Error('NOT Found');
-        }
     }
 
     update() {
@@ -58,15 +39,6 @@ module.exports = class Product {
             return null;
         } 
         return productDB[index];
-    }
-
-    static deleteById(productId) {
-        const index = productDB.findIndex(p => p.id === productId);
-        if (index > -1) {
-            productDB = productDB.filter(p => p.id !== productId);
-        } else {
-            throw new Error('NOT Found');
-        }
     }
 
 }
